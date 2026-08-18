@@ -17,21 +17,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def validate_files() -> list[Path]:
     notebooks = sorted((ROOT / "lessons").glob("*/lesson.ipynb"))
-    assert len(notebooks) == 15, f"Notebookは15本必要です: {len(notebooks)}本"
+    assert len(notebooks) == 5, f"Notebookは5本必要です（第1回のみ4パート、他は3パート）: {len(notebooks)}本"
     required_sections = [
-        "## この回でできるようになること",
-        "## DEEP DIVE",
-        "## APPENDIX（任意・追加演習）",
+        "## この回で扱うこと",
+        "# パート1：",
+        "# パート2：",
+        "# パート3：",
+        "## 発展（任意）",
+        "## 追加演習（任意）",
         "## よくある誤り",
-        "## SELF-STUDY",
+        "## 自習",
         "## 振り返りチェック",
     ]
     for path in notebooks:
         content = json.loads(path.read_text(encoding="utf-8"))
         assert content["nbformat"] == 4
-        assert len(content["cells"]) >= 20, f"セルが少なすぎます: {path}"
+        assert len(content["cells"]) >= 60, f"セルが少なすぎます: {path}"
         code_cells = [cell for cell in content["cells"] if cell["cell_type"] == "code"]
-        assert len(code_cells) >= 8, f"実行例が少なすぎます: {path}"
+        assert len(code_cells) >= 20, f"実行例が少なすぎます: {path}"
         markdown_text = "\n".join(
             "".join(cell["source"]) if isinstance(cell["source"], list) else cell["source"]
             for cell in content["cells"]
@@ -67,7 +70,7 @@ def validate_relative_links() -> None:
     pattern = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
     errors = []
     for markdown_path in ROOT.rglob("*.md"):
-        if any(part in {".git", ".venv", "work"} for part in markdown_path.parts):
+        if any(part in {".git", ".venv", ".uv-cache", "archive", "work"} for part in markdown_path.parts):
             continue
         for target in pattern.findall(markdown_path.read_text(encoding="utf-8")):
             if target.startswith(("http://", "https://", "#", "mailto:")):
@@ -89,7 +92,7 @@ def execute_notebooks(notebooks: list[Path]) -> None:
                     str(ROOT / ".venv" / "Scripts" / "jupyter.exe") if (ROOT / ".venv" / "Scripts" / "jupyter.exe").exists() else str(ROOT / ".venv" / "bin" / "jupyter"),
                     "nbconvert", "--to", "notebook", "--execute", str(path),
                     "--output", "lesson.ipynb", "--output-dir", str(output_dir),
-                    "--ExecutePreprocessor.timeout=120", "--log-level=ERROR",
+                    "--ExecutePreprocessor.timeout=420", "--log-level=ERROR",
                 ],
                 check=True,
                 cwd=ROOT,

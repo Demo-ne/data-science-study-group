@@ -45,7 +45,7 @@ uv sync
 
 教材が更新された回だけ、新しいZIPをダウンロードします。自分で変更したNotebookは先に`workspace`フォルダへ保存し、新しい教材フォルダへコピーしてください。
 
-第11回でRDKitを使う人だけ、事前に次を実行します。計算済み記述子を使う場合は不要です。
+第4回のパート2（特徴量）でRDKitを使う人だけ、事前に次を実行します。計算済み記述子を使う場合は不要です。
 
 ```powershell
 uv sync --extra chemistry
@@ -59,7 +59,7 @@ uv sync --extra chemistry
 
 1. 左のファイル一覧で、コピーしたい`lesson.ipynb`を右クリック→`コピー`
 2. `workspace`フォルダを右クリック→`貼り付け`
-3. 貼り付けたファイルを右クリック→`名前の変更`で、`03-pandas-自分の名前.ipynb`のような分かりやすい名前にする
+3. 貼り付けたファイルを右クリック→`名前の変更`で、`01-prepare-and-explore-自分の名前.ipynb`のような分かりやすい名前にする
 4. 以降はコピーした方を開いて編集します（原本はそのまま残ります）
 
 ## うまくいかないとき
@@ -75,6 +75,7 @@ Notebookのカーネルが`.venv\Scripts\python.exe`になっているか確認�
 ## Gitを試したい人向け（任意）
 
 勉強会の必須操作ではありません。興味がある人はGit for Windowsを追加し、`clone`と`pull`を試せます。アカウント作成、commit、push、Pull Requestは扱わなくても問題ありません。
+用語の意味から知りたい場合は、先に[Python環境とGitの基礎（任意）](environment-and-git-basics.md#gitを知りたい人へ)を読むと分かりやすいです。
 
 ```powershell
 git clone https://github.com/kazu-dota/data-science-study-group.git
